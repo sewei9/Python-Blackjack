@@ -14,8 +14,7 @@ class Card:
         self.rank = rank
 
     def __str__(self):
-        return self.suit + "of" \
-            + self.rank  
+        return self.suit + "of" + self.rank  
 
 
 class Deck:
@@ -29,14 +28,16 @@ class Deck:
     def __str__(self):
         player_deck = ''
         for Card in self.deck:
+            player_deck + Card.__str__()
+        return 'Your Cards are: ' + player_deck
 
 
     def shuffle(self):
         random.shuffle(self.deck)
 
     def deal(self):
-        card = self.card.pop()
-        return card
+        player_card = self.card.pop()
+        return player_card
 
 
 class Hand:
@@ -49,7 +50,7 @@ class Hand:
 
     def add_card(self, card):
         self.cards.append(card)
-        self.values
+        self.values 
 
 
     def adjust_for_ace(self):
