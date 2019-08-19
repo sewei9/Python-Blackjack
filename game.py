@@ -43,8 +43,8 @@ class Deck:
         return player_card
 
 
-test_deck = Deck()
-print(test_deck)
+# test_deck = Deck()
+# print(test_deck)
 
 
 class Hand:
@@ -78,7 +78,7 @@ class Chips:
     # def tie_bet(self):        Chips are lead back to player in case of push/tie
 
 
-def take_bet():     # Betting action initialized
+def take_bet(self):     # Betting action initialized
     while chips.bet >= 1:        # Player can only bet if chipcount >=1
         try:
             # Player input as integer
@@ -116,20 +116,21 @@ def hit_or_stand(deck, hand):
 
 # Functions to show/hide cards and deal with different game scenarios
 
-def show_some(play, dealer):        # Function for Dealer and Player to display their Hands
-    # print("Dealer cards: Hidden Card", "\n", dealer.cards[1])
-    print('Dealer cards:', "\n" 'Hidden' "\n" dealer.card[1])     # One card to be hidden, second card (Index[1]) to be displayed
-    # print("Player cards: ", player.cards[0], "\n", player.cards[1])     # Fo Players Hand both cards (Index[0],[1]) are visible
-    print('Player cards:', "\n" player.card[0] "\n" player.card[1])
+def show_some(player, dealer):        # Function for Dealer and Player to display their Hands
+    # One card to be hidden, second card (Index[1]) to be displayed
+    print(dealer.card[1])
+    # Fo Players Hand both cards (Index[0],[1]) are visible
+    print(player.card[0], player.card[1])
+
 
 def show_all(player, dealer):
     # Reveal of Dealers cards (cards list is creating in Hand class)
-    print("Dealer cards: ", dealer.card[0], "\n", dealer.card[1])
-    print("Dealer's Hand: ", dealer.value)      # Including values
-    
+    print(ealer.card[0], dealer.card[1])
+    print(dealer.value)      # Including values
+
     # Reveal of players cards
-    print("Player cards: ", player.card[0], "\n", player.card[1])
-    print("Player's Hand: ", player.value)      # Including value
+    print(player.card[0], player.card[1])
+    print(player.value)      # Including value
 
 
 # Player/Dealer wins/losses or ties the bet
@@ -158,7 +159,6 @@ def dealer_wins(dealer, player, chips):
 
 def push(dealer, player):       # No particular action since chips stack stays untouched
     print("It's a tie")
-
 
 
 # Main Game
@@ -214,11 +214,9 @@ while playing:
 
 print(player_chips.total)
 
-play_again = input("Wanna loose more money? Press 'c' to continue or 'l' to leave. Since this game sucks...")
+play_again = print(input("Wanna loose more money? Press 'c' to continue or 'l' to leave. Since this game sucks..."))
 
 if play_again == 'c':
     playing = True
-    continue
 else:
-        break
-    
+    print("Game over")
