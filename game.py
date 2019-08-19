@@ -16,7 +16,7 @@ class Card:
         self.rank = rank
 
     def __str__(self):
-        return self.rank + "of" + self.suit
+        return self.rank + " of " + self.suit
 
 
 class Deck:
@@ -25,19 +25,21 @@ class Deck:
         self.deck = []      # Initialize an empty list
         for suit in suits:      # loop over suit and rank in lists: suits & ranks
             for rank in ranks:
-                self.deck.append(Card(suit, rank))      # add one card to the Deck
+                # add one card to the Deck
+                self.deck.append(Card(suit, rank))
 
     def __str__(self):      # String Method to display the Player's Deck
         player_deck = ''        # Initialize Deck changes each round it starts with empty String
-        for Card in self.deck:      # Loop over Class Card in Class Deck
-            player_deck + Card.__str__()        # Add String to print Players cards
+        for card in self.deck:      # Loop over Class Card in Class Deck
+            player_deck += '\n' + card.__str__()        # Add String to print Players cards
         return 'Your Cards are: ' + player_deck
 
     def shuffle(self):
         random.shuffle(self.deck)   # Shuffles the entre carddeck
 
     def deal(self):
-        player_card = self.deck.pop()       # Deals cards and removes one single card at the end of the random deck-list
+        # Deals cards and removes one single card at the end of the random deck-list
+        player_card = self.deck.pop()
         return player_card
 
 
@@ -53,8 +55,9 @@ class Hand:
         self.aces = 0
 
     def add_card(self, card):
-        self.cards.append(card)     # When a card is added to a Hand, the Value of this hand is calculated with the Dictionary values[key, value]
-        self.values += values[card.rank]
+        # When a card is added to a Hand, the Value of this hand is calculated with the Dictionary values[key, value]
+        self.cards.append(card)
+        self.value += values[card.rank]
 
     def adjust_for_ace(self):
         pass
@@ -78,7 +81,8 @@ class Chips:
 def take_bet():     # Betting action initialized
     while chips.bet >= 1:        # Player can only bet if chipcount >=1
         try:
-            int(input("How many chips do you want to bet?"))        # Player input as integer
+            # Player input as integer
+            int(input("How many chips do you want to bet?"))
         except:     # Exception Handling in case of wrong user input
             print("Please insert a number")
         else:
@@ -89,13 +93,16 @@ def take_bet():     # Betting action initialized
 
 
 def hit(deck, hand):
-    hand.add_card(deck.deal)        # one single card is dealt from the deck and added to the hand // Game-Action
-    hand.adjust_for_ace()       # method to adjust hands value in case of aces in players hands > 21
+    # one single card is dealt from the deck and added to the hand // Game-Action
+    hand.add_card(deck.deal)
+    # method to adjust hands value in case of aces in players hands > 21
+    hand.adjust_for_ace()
 
 
 def hit_or_stand(deck, hand):
     global playing      # Global variable since it is crucial for Main-Game functionality True = play, FALSE = no play
-    while True:     # As long as playing is true, the Player can choose either between getting another card (hit) or standing and leave his deck unchanged
+    # As long as playing is true, the Player can choose either between getting another card (hit) or standing and leave his deck unchanged
+    while True:
         i = input("Press 'h' for Hit or 's' for Stand")
         if i == "h":
             hit(deck, hand)
@@ -110,15 +117,18 @@ def hit_or_stand(deck, hand):
 # Functions to show/hide cards and deal with different game scenarios
 
 def show_some(play, dealer):        # Function for Dealer and Player to display their Hands
-    print("Dealer cards: Hidden Card", "\n", dealer.cards[1])       # One card to be hidden, second card (Index[1]) to be displayed
-    print("Player cards: ", player.cards[0], "\n", player.cards[1])     # Fo Players Hand both cards (Index[0],[1]) are visible
-
+    # print("Dealer cards: Hidden Card", "\n", dealer.cards[1])
+    print('Dealer cards:', "\n" 'Hidden' "\n" dealer.card[1])     # One card to be hidden, second card (Index[1]) to be displayed
+    # print("Player cards: ", player.cards[0], "\n", player.cards[1])     # Fo Players Hand both cards (Index[0],[1]) are visible
+    print('Player cards:', "\n" player.card[0] "\n" player.card[1])
 
 def show_all(player, dealer):
-    print("Dealer cards: ", dealer.cards[0], "\n", dealer.cards[1])     # Reveal of Dealers cards (cards list is creating in Hand class)
+    # Reveal of Dealers cards (cards list is creating in Hand class)
+    print("Dealer cards: ", dealer.card[0], "\n", dealer.card[1])
     print("Dealer's Hand: ", dealer.value)      # Including values
-
-    print("Player cards: ", player.cards[0], "\n", player.card[1])      # Reveal of players cards
+    
+    # Reveal of players cards
+    print("Player cards: ", player.card[0], "\n", player.card[1])
     print("Player's Hand: ", player.value)      # Including value
 
 
@@ -136,7 +146,7 @@ def player_wins(dealer, player, chips):
 
 def dealer_busts(dealer, player, chips):
     print("Dealer busts!")
-    chips.win_bet()     
+    chips.win_bet()
 
 
 def dealer_wins(dealer, player, chips):
@@ -144,8 +154,71 @@ def dealer_wins(dealer, player, chips):
     chips.lose_bet()
 
 # Dealer and Player tie for win. Bet will be returned to player
+
+
 def push(dealer, player):       # No particular action since chips stack stays untouched
-    print("It's a tie") 
+    print("It's a tie")
+
 
 
 # Main Game
+# Print an opening Statement
+print("Welcome to Johnny Knoxville, this is Blackjack")
+print()
+
+# Create and shuffle a Deck, deal two cards to the player
+deck = Deck()
+deck.shuffle()
+
+player_hand = Hand()
+player_hand.add_card(deck.deal())
+player_hand.add_card(deck.deal())
+
+dealer_hand = Hand()
+dealer_hand.add_card(deck.deal())
+dealer_hand.add_card(deck.deal())
+
+# Set up the Player's chips (100 default)
+player_chips = Chips()
+
+# Prompt the player for their first bet
+take_bet(player_chips)
+
+# Show cards, but keep one dealer card hidden
+show_some(dealer_hand, player_hand)
+
+while playing:
+    hit_or_stand(player, Hand)
+    show_some(dealer.cards, player.cards)
+    if player_hand.value > 21:
+        player_busts(player_hand, dealer_hand, player_chips)
+        break
+
+    if player_hand.value < 21:
+        while dealer_hand.value < 17:
+            hit(deck, dealer_hand)
+
+        show_all(player_hand, dealer_hand)
+
+    if dealer_hand.value < player_hand.value:
+        player_wins(player_hand, dealer_hand, player_chips)
+
+    elif dealer_hand.value > player_hand.value:
+        dealer_wins(player_hand, dealer_hand, player_chips)
+
+    elif dealer_hand.value > 21:
+        dealer_busts(dealer_hand, player_hand, player_chips)
+
+    else:
+        push(player_hand, dealer_hand)
+
+print(player_chips.total)
+
+play_again = input("Wanna loose more money? Press 'c' to continue or 'l' to leave. Since this game sucks...")
+
+if play_again == 'c':
+    playing = True
+    continue
+else:
+        break
+    
