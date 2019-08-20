@@ -1,6 +1,6 @@
 import random
 
-suits = ('Hearts', 'Diamnods', 'Spades', 'Clubs')
+suits = ('Hearts', 'Diamonds', 'Spades', 'Clubs')
 ranks = ('Two', 'Three', 'Four', 'Five', 'Six', 'Seven',
          'Eight', 'Nine', 'Ten', 'Jack', 'Queen', 'King', 'Ace')
 values = {'Two': 2, 'Three': 3, 'Four': 4, 'Five': 5, 'Six': 6, 'Seven': 7, 'Eight': 8, 'Nine': 9, 'Ten': 10, 'Jack': 10,
@@ -29,10 +29,10 @@ class Deck:
                 self.deck.append(Card(suit, rank))
 
     def __str__(self):      # String Method to display the Player's Deck
-        player_deck = ''        # Initialize Deck changes each round it starts with empty String
+        game_deck = ''        # Initialize Deck changes each round it starts with empty String
         for card in self.deck:      # Loop over Class Card in Class Deck
-            player_deck += '\n' + card.__str__()        # Add String to print Players cards
-        return 'Your Cards are: ' + player_deck
+            game_deck += '\n' + card.__str__()        # Add String to print Players cards
+        return 'Your Cards are: ' + game_deck
 
     def shuffle(self):
         random.shuffle(self.deck)   # Shuffles the entre carddeck
@@ -76,38 +76,52 @@ class Chips:
         self.total -= self.bet
 
     # def tie_bet(self):        Chips are lead back to player in case of push/tie
+101
 
-
-def take_bet(self):     # Betting action initialized
-    while chips.bet >= 1:        # Player can only bet if chipcount >=1
+def take_bet(chips):
+    while True:
         try:
-            # Player input as integer
-            int(input("How many chips do you want to bet?"))
-        except:     # Exception Handling in case of wrong user input
-            print("Please insert a number")
+            chips.bet = int(input("How many chips do you want to bet?"))
+        except ValueError:
+            print("Please enter an integer.")
         else:
-            if chips.bet > chips.total:     # If the amount of chips bet is higher the amount of total chips of the players stack, bet-action is denied
-                print("You dont have enough chips to make that move")
+            if chips.bet > chips.total:
+                print("100 is the maximum amount of Chips one can bet.")
             else:
-                break       # Leaves the loop immediately when if-statement is true
+                break
+# def take_bet(chips):     # Betting action initialized
+    # while chips.bet >= 1:        # Player can only bet if chipcount >=1
+    #    try:
+    #        # Player input as integer
+    #        int(input("How many chips do you want to bet?"))
+    #    except:     # Exception Handling in case of wrong user input
+    #        print("Please insert a number")
+    #    else:
+    #        if chips.bet > chips.total:     # If the amount of chips bet is higher the amount of total chips of the players stack, bet-action is denied
+    #            print("You dont have enough chips to make that move")
+    #        else:
+    #            break       # Leaves the loop immediately when if-statement is true
 
 
 def hit(deck, hand):
     # one single card is dealt from the deck and added to the hand // Game-Action
-    hand.add_card(deck.deal)
+    hand.add_card(deck.deal())
     # method to adjust hands value in case of aces in players hands > 21
-    hand.adjust_for_ace()
+    # hand.adjust_for_ace()
 
 
 def hit_or_stand(deck, hand):
     global playing      # Global variable since it is crucial for Main-Game functionality True = play, FALSE = no play
     # As long as playing is true, the Player can choose either between getting another card (hit) or standing and leave his deck unchanged
     while True:
-        i = input("Press 'h' for Hit or 's' for Stand")
-        if i == "h":
+        i = input("Press 'h' for Hit or 's' for Stand: ")
+
+        if i[0].lower() == 'h':
             hit(deck, hand)
-        elif i == "s":
+
+        elif i[0].lower() == 's':
             playing = False
+
         else:
             print("Please enter 'h' or 's'")
             continue        # Interrupts Selection Menu if something is entered except of "h" or "s"
@@ -118,19 +132,21 @@ def hit_or_stand(deck, hand):
 
 def show_some(player, dealer):        # Function for Dealer and Player to display their Hands
     # One card to be hidden, second card (Index[1]) to be displayed
-    print(dealer.card[1])
-    # Fo Players Hand both cards (Index[0],[1]) are visible
-    print(player.card[0], player.card[1])
+    print("Dealer's Hand: ")
+    print("***************")
+    print(dealer.cards[1])
+    print("\nPlayer's Hand: ", *player.cards, sep= '\n')
+    #print(player.cards[0], player.cards[1])
 
 
 def show_all(player, dealer):
     # Reveal of Dealers cards (cards list is creating in Hand class)
-    print(ealer.card[0], dealer.card[1])
-    print(dealer.value)      # Including values
+    print("\nPlayer's Hand: ", *dealer.cards, sep= '\n')
+    print("Dealer's Hand: ", dealer.value)      # Including values
 
     # Reveal of players cards
-    print(player.card[0], player.card[1])
-    print(player.value)      # Including value
+    print("\nPlayer's Hand: ", *player.cards, sep= '\n')
+    print("Player's Hand: ", player.value)      # Including value
 
 
 # Player/Dealer wins/losses or ties the bet
@@ -162,61 +178,67 @@ def push(dealer, player):       # No particular action since chips stack stays u
 
 
 # Main Game
-# Print an opening Statement
-print("Welcome to Johnny Knoxville, this is Blackjack")
-print()
+while True:
+    # Print an opening Statement
+    print("Welcome to Johnny Knoxville, this is Blackjack")
+    print()
 
-# Create and shuffle a Deck, deal two cards to the player
-deck = Deck()
-deck.shuffle()
+    # Create and shuffle a Deck, deal two cards to the player
+    deck = Deck()
+    deck.shuffle()
 
-player_hand = Hand()
-player_hand.add_card(deck.deal())
-player_hand.add_card(deck.deal())
+    player_hand = Hand()
+    player_hand.add_card(deck.deal())
+    player_hand.add_card(deck.deal())
 
-dealer_hand = Hand()
-dealer_hand.add_card(deck.deal())
-dealer_hand.add_card(deck.deal())
+    dealer_hand = Hand()
+    dealer_hand.add_card(deck.deal())
+    dealer_hand.add_card(deck.deal())
 
-# Set up the Player's chips (100 default)
-player_chips = Chips()
+    # Set up the Player's chips (100 default)
+    player_chips = Chips()
 
-# Prompt the player for their first bet
-take_bet(player_chips)
+    # Prompt the player for their first bet
+    take_bet(player_chips)
 
-# Show cards, but keep one dealer card hidden
-show_some(dealer_hand, player_hand)
+    # Show cards, but keep one dealer card hidden
+    show_some(dealer_hand, player_hand)
 
-while playing:
-    hit_or_stand(player, Hand)
-    show_some(dealer.cards, player.cards)
-    if player_hand.value > 21:
-        player_busts(player_hand, dealer_hand, player_chips)
-        break
+    while playing:
 
-    if player_hand.value < 21:
+        hit_or_stand(deck, player_hand)
+
+        show_some(dealer_hand, player_hand)
+
+        if player_hand.value > 21:
+            player_busts(player_hand, dealer_hand, player_chips)
+            break
+
+    if player_hand.value <= 21:
         while dealer_hand.value < 17:
             hit(deck, dealer_hand)
 
         show_all(player_hand, dealer_hand)
 
-    if dealer_hand.value < player_hand.value:
-        player_wins(player_hand, dealer_hand, player_chips)
+        if dealer_hand.value > 21:
+            dealer_busts(dealer_hand, player_hand, player_chips)
 
-    elif dealer_hand.value > player_hand.value:
-        dealer_wins(player_hand, dealer_hand, player_chips)
+        elif dealer_hand.value > player_hand.value:
+            dealer_wins(player_hand, dealer_hand, player_chips)
 
-    elif dealer_hand.value > 21:
-        dealer_busts(dealer_hand, player_hand, player_chips)
+        elif dealer_hand.value < player_hand.value:
+            player_wins(player_hand, dealer_hand, player_chips)
 
+        else:
+            push(player_hand, dealer_hand)
+
+    print('This is your current amount of chips: ', player_chips.total)
+
+    play_again = input("Wanna loose more money? Press 'c' to continue or 'l' to leave. Since this game sucks...")
+    
+    if play_again[0].lower() == 'c':
+        playing = True
+        continue
     else:
-        push(player_hand, dealer_hand)
-
-print(player_chips.total)
-
-play_again = print(input("Wanna loose more money? Press 'c' to continue or 'l' to leave. Since this game sucks..."))
-
-if play_again == 'c':
-    playing = True
-else:
-    print("Game over")
+        print("Game Over")
+        break
