@@ -1,3 +1,4 @@
+
 import random
 
 suits = ('Hearts', 'Diamonds', 'Spades', 'Clubs')
@@ -76,12 +77,12 @@ class Chips:
         self.total -= self.bet
 
     # def tie_bet(self):        Chips are lead back to player in case of push/tie
-101
+
 
 def take_bet(chips):
     while True:
         try:
-            chips.bet = int(input("How many chips do you want to bet?"))
+            chips.bet = int(input("How many chips do you want to bet?: "))
         except ValueError:
             print("Please enter an integer.")
         else:
@@ -135,21 +136,24 @@ def show_some(player, dealer):        # Function for Dealer and Player to displa
     print("Dealer's Hand: ")
     print("***************")
     print(dealer.cards[1])
-    print("\nPlayer's Hand: ", *player.cards, sep= '\n')
+    print()
+    print("\nPlayer's Hand: ", *player.cards, sep='\n')
+    print()
     #print(player.cards[0], player.cards[1])
 
 
 def show_all(player, dealer):
     # Reveal of Dealers cards (cards list is creating in Hand class)
-    print("\nPlayer's Hand: ", *dealer.cards, sep= '\n')
+    print("\nDealer's Hand: ", *dealer.cards, sep='\n')
     print("Dealer's Hand: ", dealer.value)      # Including values
-
+    print()
     # Reveal of players cards
-    print("\nPlayer's Hand: ", *player.cards, sep= '\n')
+    print("\nPlayer's Hand: ", *player.cards, sep='\n')
     print("Player's Hand: ", player.value)      # Including value
-
+    print()
 
 # Player/Dealer wins/losses or ties the bet
+
 
 def player_busts(dealer, player, chips):
     print("Busted!")
@@ -202,13 +206,13 @@ while True:
     take_bet(player_chips)
 
     # Show cards, but keep one dealer card hidden
-    show_some(dealer_hand, player_hand)
+    show_some(player_hand, dealer_hand)
 
     while playing:
 
         hit_or_stand(deck, player_hand)
 
-        show_some(dealer_hand, player_hand)
+        show_some(player_hand, dealer_hand)
 
         if player_hand.value > 21:
             player_busts(player_hand, dealer_hand, player_chips)
@@ -221,7 +225,7 @@ while True:
         show_all(player_hand, dealer_hand)
 
         if dealer_hand.value > 21:
-            dealer_busts(dealer_hand, player_hand, player_chips)
+            dealer_busts(player_hand, dealer_hand, player_chips)
 
         elif dealer_hand.value > player_hand.value:
             dealer_wins(player_hand, dealer_hand, player_chips)
@@ -234,8 +238,9 @@ while True:
 
     print('This is your current amount of chips: ', player_chips.total)
 
-    play_again = input("Wanna loose more money? Press 'c' to continue or 'l' to leave. Since this game sucks...")
-    
+    play_again = input(
+        "Wanna loose more money? Press 'c' to continue or 'l' to leave.")
+
     if play_again[0].lower() == 'c':
         playing = True
         continue
