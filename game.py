@@ -44,10 +44,6 @@ class Deck:
         return player_card
 
 
-# test_deck = Deck()
-# print(test_deck)
-
-
 class Hand:
 
     def __init__(self):     # Initializes a Hand with an empty cards list; Sets values and aces in this list as 0
@@ -90,18 +86,6 @@ def take_bet(chips):
                 print("100 is the maximum amount of Chips one can bet.")
             else:
                 break
-# def take_bet(chips):     # Betting action initialized
-    # while chips.bet >= 1:        # Player can only bet if chipcount >=1
-    #    try:
-    #        # Player input as integer
-    #        int(input("How many chips do you want to bet?"))
-    #    except:     # Exception Handling in case of wrong user input
-    #        print("Please insert a number")
-    #    else:
-    #        if chips.bet > chips.total:     # If the amount of chips bet is higher the amount of total chips of the players stack, bet-action is denied
-    #            print("You dont have enough chips to make that move")
-    #        else:
-    #            break       # Leaves the loop immediately when if-statement is true
 
 
 def hit(deck, hand):
